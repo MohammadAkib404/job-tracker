@@ -5,20 +5,30 @@ import prisma from "./prisma";
 export async function addTask(formData: FormData) {
   const title = formData.get("task-input") as string;
   await prisma.task.create({
-    data:{
+    data: {
       title,
     },
-  })
-  revalidatePath("/")
+  });
+  revalidatePath("/");
 }
 
-export async function getTasks(){
+export async function getTasks() {
   const allTasks = await prisma.task.findMany({
-    orderBy:{
-      createdAt: "asc"
-    }
-  })
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
 
   return allTasks;
 }
 
+export async function updateTask(id: string, formData: FormData) {
+  console.log(id);
+  const title = formData.get("edit-input") as string;
+  console.log(title);
+  await prisma.task.update({
+    where: {id},
+    data: {title}
+  })
+  revalidatePath("/")
+}
