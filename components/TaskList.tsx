@@ -1,5 +1,5 @@
 "use client" 
-import { useState } from "react";
+import React, { useState } from "react";
 import * as actions from "../lib/actions";
 import {Plus, Save, X } from "lucide-react";
 
@@ -18,6 +18,11 @@ export default function TaskList({ tasks } : {tasks: Task[]}) {
     await actions.updateTask(editingId, formData);
     setEditingId(null);
   }
+  
+  const handleChange = async (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    await actions.toggleTaskCompletion(id, e.target.checked);
+  }
+
 
   return (
     <section className="min-h-screen bg-slate-100 p-6">
@@ -63,12 +68,15 @@ export default function TaskList({ tasks } : {tasks: Task[]}) {
                 </form>
               ) : (
                 <div key={task.id} className="flex items-center justify-between rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md">
+                  <div className="flex gap-3 items-center">
+                    <input onChange={(e) => handleChange(task.id, e)} type="checkbox" className="size-4"/>
                   <p className="font-medium">{task.title}</p>
+                  </div>
 
                   <div className="flex gap-2">
                     <button onClick={() => setEditingId(task.id)} className="rounded-md border px-3 py-1 text-sm hover:bg-gray-100">Edit</button>
 
-                    <button className="rounded-md border px-3 py-1 text-sm hover:bg-gray-100">Delete</button>
+                    <button onClick={() => actions.deleteTask(task.id)} className="rounded-md border px-3 py-1 text-sm hover:bg-gray-100">Delete</button>
                   </div>
                 </div>
               );

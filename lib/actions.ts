@@ -32,3 +32,18 @@ export async function updateTask(id: string, formData: FormData) {
   })
   revalidatePath("/")
 }
+
+export async function deleteTask(id: string){
+  await prisma.task.delete({
+    where: {id}
+  })
+  revalidatePath("/")
+}
+
+export async function toggleTaskCompletion(id: string, completed: boolean){
+  await prisma.task.update({
+    where: {id},
+    data: {completed}
+  })
+  revalidatePath("/")
+}
