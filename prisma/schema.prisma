@@ -10,11 +10,12 @@ datasource db {
 model Application {
   id String @id @default(uuid())
   company String
-  role String 
+  position String 
   status JobStatus
   appliedAt DateTime
-  notes String?
-  link String?
+  salary Int
+  contact String
+  notes String
 }
 
 enum JobStatus {

@@ -18,7 +18,8 @@ export default async function Home() {
           <button className="bg-green-400 flex items-center justify-center size-8 p-1.5 rounded-full"><Plus className="size-6"/></button>
         </div>
         <table className="w-full text-sm mx-auto mt-8">
-          <tr className="*:border *:border-gray-300 text-gray-700 *:p-2">
+         <thead>
+           <tr className="*:border *:border-gray-300 text-gray-700 *:p-2">
             <th>Company</th>
             <th>Postion</th>
             <th>Status</th>
@@ -27,17 +28,20 @@ export default async function Home() {
             <th>Notes</th>
             <th>Contact</th>
           </tr>
-          {applications.map((a) => (
-            <tr className="*:border *:border-gray-300 *:p-2">
+         </thead>
+          <tbody>
+            {applications.map((a, i) => (
+            <tr key={i} className="*:border *:border-gray-300 *:p-2">
               <td>{a.company}</td>
-              <td>{a.role}</td>
+              <td>{a.position}</td>
               <td>{a.status}</td>
               <td>{a.appliedAt.toDateString()}</td>
-              <td>$75,000</td>
+              <td>₹ {a.salary.toLocaleString("en-IN")}</td>
               <td>{a.notes}</td>
-              <td>{a.link}</td>
+              <td>{a.contact}</td>
             </tr>
           ))}
+          </tbody>
         </table>
       </div>
     </section>

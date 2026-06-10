@@ -1,3 +1,5 @@
+import { createApplication } from "@/lib/actions";
+
 export default function Form() {
   return (
     <section className="max-w-5xl w-full mx-auto rounded-xl border border-gray-200 bg-white shadow-sm p-8">
@@ -5,7 +7,7 @@ export default function Form() {
         <h2 className="text-xl font-semibold text-gray-900">Application Info</h2>
       </div>
 
-      <form className="grid grid-cols-2 gap-6">
+      <form action={createApplication} className="grid grid-cols-2 gap-6">
         {/* Company */}
         <div className="flex flex-col gap-2">
           <label
@@ -26,14 +28,14 @@ export default function Form() {
         {/* Position */}
         <div className="flex flex-col gap-2">
           <label
-            htmlFor="role"
+            htmlFor="position"
             className="text-sm font-medium text-gray-500"
           >
             Position
           </label>
           <input
-            id="role"
-            name="role"
+            id="position"
+            name="position"
             type="text"
             placeholder="Software Engineer Intern"
             className="h-11 rounded-md border border-gray-200 px-3 text-gray-900 text-sm shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10"
