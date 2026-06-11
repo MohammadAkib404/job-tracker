@@ -26,3 +26,6 @@ export async function createApplication(formData: FormData) {
     },
   });
 }
+export async function getApplications() {
+  return await prisma.application.findMany();
+}

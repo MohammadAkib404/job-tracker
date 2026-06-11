@@ -1,8 +1,8 @@
 import { createApplication } from "@/lib/actions";
 
-export default function Form() {
+export default function Form({setIsOpen}: {setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
   return (
-    <section className="max-w-5xl w-full mx-auto rounded-xl border border-gray-200 bg-white shadow-sm p-8">
+    <section className="max-w-5xl w-full mx-auto rounded-xl border border-gray-200 bg-white shadow-lg p-8">
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-900">Application Info</h2>
       </div>
@@ -132,6 +132,7 @@ export default function Form() {
         <div className="col-span-2 flex justify-end gap-3 pt-2">
           <button
             type="button"
+            onClick={() => setIsOpen(prev => !prev)}
             className="rounded-md border border-gray-200 px-4 py-2 text-sm font-medium text-gray-900 transition hover:bg-gray-50"
           >
             Cancel
