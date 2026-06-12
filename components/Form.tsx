@@ -1,59 +1,80 @@
-import { createApplication } from "@/lib/actions";
+"use client";
+import { createOrUpdateApplication } from "@/lib/actions";
+import { AP } from "./UtilsComp";
+import { X } from "lucide-react";
 
-export default function Form({setIsOpen}: {setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
+type FormProps = {
+  applicationData: AP | null;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function Form({ applicationData, setIsOpen }: FormProps) {
+  const handleSubmit = async (formData: FormData) => {
+    await createOrUpdateApplication(applicationData?.id, formData);
+    setIsOpen((prev) => !prev);
+  };
+
+  const isEditing = Boolean(applicationData?.id);
+
   return (
-    <section className="max-w-5xl w-full mx-auto rounded-xl border border-gray-200 bg-white shadow-lg p-8">
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-900">Application Info</h2>
+    <section className="w-full max-w-2xl mx-auto rounded-2xl border border-border bg-card shadow-xl shadow-black/10 overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-border px-7 py-5">
+        <div>
+          <h2 className="text-base font-semibold text-primary">{isEditing ? "Edit Application" : "New Application"}</h2>
+          <p className="text-xs text-muted mt-0.5">{isEditing ? "Update the details below." : "Fill in the details to track a new role."}</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsOpen(false)}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-subtle transition-colors hover:bg-surface hover:text-primary"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
 
-      <form action={createApplication} className="grid grid-cols-2 gap-6">
+      {/* Body */}
+      <form action={(formData) => handleSubmit(formData)} className="px-7 py-6 grid grid-cols-2 gap-5">
         {/* Company */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="company"
-            className="text-sm font-medium text-gray-500"
-          >
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="company" className="text-xs font-medium text-muted uppercase tracking-wide">
             Company
           </label>
           <input
             id="company"
             name="company"
             type="text"
+            defaultValue={applicationData?.company}
             placeholder="Google"
-            className="h-11 rounded-md border border-gray-200 px-3 text-gray-900 text-sm shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="h-10 rounded-lg border border-border bg-surface px-3 text-sm text-primary placeholder:text-subtle transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
         </div>
 
         {/* Position */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="position"
-            className="text-sm font-medium text-gray-500"
-          >
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="position" className="text-xs font-medium text-muted uppercase tracking-wide">
             Position
           </label>
           <input
             id="position"
             name="position"
             type="text"
-            placeholder="Software Engineer Intern"
-            className="h-11 rounded-md border border-gray-200 px-3 text-gray-900 text-sm shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10"
+            defaultValue={applicationData?.position}
+            placeholder="Software Engineer"
+            className="h-10 rounded-lg border border-border bg-surface px-3 text-sm text-primary placeholder:text-subtle transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
         </div>
 
         {/* Status */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="status"
-            className="text-sm font-medium text-gray-500"
-          >
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="status" className="text-xs font-medium text-muted uppercase tracking-wide">
             Status
           </label>
           <select
             id="status"
             name="status"
-            className="h-11 rounded-md border border-gray-200 bg-white px-3 text-gray-900 text-sm shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10"
+            defaultValue={applicationData?.status}
+            className="h-10 rounded-lg border border-border bg-surface px-3 text-sm text-primary transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           >
             <option value="Applied">Applied</option>
             <option value="Interview">Interview</option>
@@ -63,86 +84,78 @@ export default function Form({setIsOpen}: {setIsOpen: React.Dispatch<React.SetSt
         </div>
 
         {/* Application Date */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="appliedAt"
-            className="text-sm font-medium text-gray-500"
-          >
-            Application Date
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="appliedAt" className="text-xs font-medium text-muted uppercase tracking-wide">
+            Applied Date
           </label>
           <input
             id="appliedAt"
             name="appliedAt"
             type="date"
-            className="h-11 rounded-md border border-gray-200 px-3 text-gray-900 text-sm shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10"
+            defaultValue={applicationData?.appliedAt.toISOString().split("T")[0]}
+            className="h-10 rounded-lg border border-border bg-surface px-3 text-sm text-primary transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
         </div>
 
         {/* Salary */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="salary"
-            className="text-sm font-medium text-gray-500"
-          >
-            Salary
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="salary" className="text-xs font-medium text-muted uppercase tracking-wide">
+            Salary (₹)
           </label>
           <input
             id="salary"
             name="salary"
             type="number"
+            defaultValue={isNaN(Number(applicationData?.salary)) ? 0 : Number(applicationData?.salary)}
             placeholder="1200000"
-            className="h-11 rounded-md border border-gray-200 px-3 text-sm shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="h-10 rounded-lg border border-border bg-surface px-3 text-sm text-primary placeholder:text-subtle transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
         </div>
 
         {/* Contact */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="contact"
-            className="text-sm font-medium text-gray-500"
-          >
-            Contact
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="contact" className="text-xs font-medium text-muted uppercase tracking-wide">
+            Contact Email
           </label>
           <input
             id="contact"
             name="contact"
             type="email"
+            defaultValue={applicationData?.contact}
             placeholder="recruiter@company.com"
-            className="h-11 rounded-md border border-gray-200 px-3 text-gray-900 text-sm shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="h-10 rounded-lg border border-border bg-surface px-3 text-sm text-primary placeholder:text-subtle transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
         </div>
 
         {/* Notes */}
-        <div className="col-span-2 flex flex-col gap-2">
-          <label
-            htmlFor="notes"
-            className="text-sm font-medium text-gray-500"
-          >
+        <div className="col-span-2 flex flex-col gap-1.5">
+          <label htmlFor="notes" className="text-xs font-medium text-muted uppercase tracking-wide">
             Notes
           </label>
           <textarea
             id="notes"
             name="notes"
-            placeholder="Applied through referral. Waiting for recruiter response..."
-            className="min-h-32 resize-none rounded-md border border-gray-200 px-3 py-3 text-gray-900 text-sm shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10"
+            defaultValue={applicationData?.notes}
+            placeholder="Applied through referral. Awaiting recruiter response..."
+            rows={3}
+            className="resize-none rounded-lg border border-border bg-surface px-3 py-2.5 text-sm text-primary placeholder:text-subtle transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           />
         </div>
 
         {/* Actions */}
-        <div className="col-span-2 flex justify-end gap-3 pt-2">
+        <div className="col-span-2 flex justify-end gap-2 pt-1 border-t border-border">
           <button
             type="button"
-            onClick={() => setIsOpen(prev => !prev)}
-            className="rounded-md border border-gray-200 px-4 py-2 text-sm font-medium text-gray-900 transition hover:bg-gray-50"
+            onClick={() => setIsOpen(false)}
+            className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted transition hover:bg-surface hover:text-primary"
           >
             Cancel
           </button>
-
           <button
             type="submit"
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
+            className="rounded-lg bg-brand px-5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-[var(--brand-hover)] active:scale-[0.98]"
           >
-            Save Application
+            {isEditing ? "Save Changes" : "Add Application"}
           </button>
         </div>
       </form>
