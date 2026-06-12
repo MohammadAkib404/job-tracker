@@ -28,7 +28,7 @@ export default function Navbar() {
         {/* Actions */}
         <div className="flex items-center gap-2">
           <button className="rounded-lg px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-surface hover:text-primary">Sign in</button>
-          <button className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-[var(--brand-hover)] active:scale-[0.98]">
+          <button className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-hover active:scale-[0.98]">
             Get Started
           </button>
         </div>

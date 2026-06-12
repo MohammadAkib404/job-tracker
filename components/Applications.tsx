@@ -36,7 +36,7 @@ export default function Applications({ allApplications }: { allApplications: AP[
           </div>
           <button
             onClick={handleAdd}
-            className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-[var(--brand-hover)] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-hover active:scale-[0.98]"
           >
             <Plus className="h-4 w-4" />
             Add Application

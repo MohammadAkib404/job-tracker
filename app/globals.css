@@ -3,8 +3,8 @@
 @theme {
   /* Brand */
   --color-brand: #2563eb;
-  --brand-hover: #1d4ed8;
-  --brand-light: #dbeafe;
+  --color-hover: #1d4ed8;
+  --color-light: #dbeafe;
 
   /* Surfaces */
   --color-surface: #f4f8fc;

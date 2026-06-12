@@ -153,7 +153,7 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
           </button>
           <button
             type="submit"
-            className="rounded-lg bg-brand px-5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-[var(--brand-hover)] active:scale-[0.98]"
+            className="rounded-lg bg-brand px-5 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-hover active:scale-[0.98]"
           >
             {isEditing ? "Save Changes" : "Add Application"}
           </button>
