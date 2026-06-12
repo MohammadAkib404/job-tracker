@@ -1,40 +1,23 @@
-/* ═══════════════════════════════════════════════════════
-   COLOR PALETTE — tweak these variables to retheme the
-   entire app. All components reference these tokens.
-   ═══════════════════════════════════════════════════════ */
 @import "tailwindcss";
 
 @theme {
   /* Brand */
-  --color-brand: #6366f1; /* primary accent — indigo */
-  --brand-hover: #4f46e5; /* darker on hover */
-  --brand-light: #eef2ff; /* tinted bg for brand highlights */
+  --color-brand: #2563eb;
+  --brand-hover: #1d4ed8;
+  --brand-light: #dbeafe;
 
   /* Surfaces */
-  --color-surface: #f9fafb; /* page background */
-  --color-card: #ffffff; /* cards, panels, navbar */
+  --color-surface: #f4f8fc;
+  --color-card: #fbfdff;
 
   /* Borders */
-  --color-border: #e5e7eb; /* dividers, input borders */
+  --color-border: #dce7f3;
 
   /* Text */
-  --color-primary: #111827; /* headings, important content */
-  --color-muted: #6b7280; /* secondary labels, body */
-  --color-subtle: #9ca3af; /* placeholders, de-emphasised */
+  --color-primary: #0f172a;
+  --color-muted: #475569;
+  --color-subtle: #94a3b8;
 }
-/* @theme {
-  --color-background: #fafafa;
-  --color-surface: #ffffff;
-
-  --color-primary: #18181b;
-  --color-secondary: #52525b;
-
-  --color-muted: #71717a;
-  --color-border: #e4e4e7;
-
-  --color-success: #16a34a;
-  --color-danger: #dc2626;
-} */
 
 /* Base */
 *,

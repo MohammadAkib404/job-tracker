@@ -4,11 +4,16 @@ import { AP, StatsBar, StatusBadge } from "@/components/UtilsComp";
 import Form from "@/components/Form";
 import { deleteApplication, findApplication } from "@/lib/actions";
 import { Edit2, Plus, Trash2, Briefcase } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+export type ST = "Total" | "Applied" | "Interview" | "Offer" | "Rejected";
 
 export default function Applications({ allApplications }: { allApplications: AP[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [applicationData, setApplicationData] = useState<AP | null>(null);
+  const [selected, setSelected] = useState<ST>("Total");
+
+  let applications = selected === "Total" ? allApplications : allApplications.filter((a) => a.status === selected);
 
   const handleAdd = () => {
     setApplicationData(null);
@@ -27,10 +32,7 @@ export default function Applications({ allApplications }: { allApplications: AP[
         {/* Page header */}
         <div className="flex items-start justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-semibold text-primary tracking-tight">Applications</h1>
-            <p className="text-sm text-muted mt-1">
-              {allApplications.length} {allApplications.length === 1 ? "role" : "roles"} tracked
-            </p>
+            <h1 className="text-3xl font-semibold text-primary tracking-tight">Applications</h1>
           </div>
           <button
             onClick={handleAdd}
@@ -42,7 +44,7 @@ export default function Applications({ allApplications }: { allApplications: AP[
         </div>
 
         {/* Stats */}
-        {allApplications.length > 0 && <StatsBar apps={allApplications} />}
+        {allApplications.length > 0 && <StatsBar apps={allApplications} selected={selected} setSelected={setSelected} />}
 
         {/* Table card */}
         <div className="rounded-xl border border-border bg-card overflow-hidden">
@@ -67,7 +69,7 @@ export default function Applications({ allApplications }: { allApplications: AP[
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {allApplications.map((a, i) => (
+                {applications.map((a, i) => (
                   <tr key={a.id} className="group transition-colors hover:bg-surface">
                     <td className="pl-5 pr-4 py-3.5 text-xs text-subtle tabular-nums w-8">{i + 1}</td>
                     <td className="px-4 py-3.5 font-medium text-primary whitespace-nowrap">{a.company}</td>
