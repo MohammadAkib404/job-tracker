@@ -22,7 +22,7 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
       <div className="flex items-center justify-between border-b border-border px-7 py-5">
         <div>
           <h2 className="text-base font-semibold text-primary">{isEditing ? "Edit Application" : "New Application"}</h2>
-          <p className="text-xs text-muted mt-0.5">{isEditing ? "Update the details below." : "Fill in the details to track a new role."}</p>
+          <p className="text-xs text-subtle mt-0.5">{isEditing ? "Update the details below." : "Fill in the details to track a new role."}</p>
         </div>
         <button
           type="button"
@@ -37,7 +37,7 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
       <form action={(formData) => handleSubmit(formData)} className="px-7 py-6 grid grid-cols-2 gap-5">
         {/* Company */}
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="company" className="text-xs font-medium text-muted uppercase tracking-wide">
+          <label htmlFor="company" className="text-xs font-medium text-subtle uppercase tracking-wide">
             Company
           </label>
           <input
@@ -52,7 +52,7 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
 
         {/* Position */}
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="position" className="text-xs font-medium text-muted uppercase tracking-wide">
+          <label htmlFor="position" className="text-xs font-medium text-subtle uppercase tracking-wide">
             Position
           </label>
           <input
@@ -67,25 +67,25 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
 
         {/* Status */}
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="status" className="text-xs font-medium text-muted uppercase tracking-wide">
+          <label htmlFor="status" className="text-xs font-medium text-subtle uppercase tracking-wide">
             Status
           </label>
           <select
             id="status"
             name="status"
-            defaultValue={applicationData?.status}
+            defaultValue={applicationData?.status?.toLowerCase() ?? "applied"}
             className="h-10 rounded-lg border border-border bg-surface px-3 text-sm text-primary transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
           >
-            <option value="Applied">Applied</option>
-            <option value="Interview">Interview</option>
-            <option value="Rejected">Rejected</option>
-            <option value="Offer">Offer</option>
+            <option value="applied">Applied</option>
+            <option value="interview">Interview</option>
+            <option value="rejected">Rejected</option>
+            <option value="offer">Offer</option>
           </select>
         </div>
 
         {/* Application Date */}
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="appliedAt" className="text-xs font-medium text-muted uppercase tracking-wide">
+          <label htmlFor="appliedAt" className="text-xs font-medium text-subtle uppercase tracking-wide">
             Applied Date
           </label>
           <input
@@ -99,7 +99,7 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
 
         {/* Salary */}
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="salary" className="text-xs font-medium text-muted uppercase tracking-wide">
+          <label htmlFor="salary" className="text-xs font-medium text-subtle uppercase tracking-wide">
             Salary (₹)
           </label>
           <input
@@ -114,7 +114,7 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
 
         {/* Contact */}
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="contact" className="text-xs font-medium text-muted uppercase tracking-wide">
+          <label htmlFor="contact" className="text-xs font-medium text-subtle uppercase tracking-wide">
             Contact Email
           </label>
           <input
@@ -129,7 +129,7 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
 
         {/* Notes */}
         <div className="col-span-2 flex flex-col gap-1.5">
-          <label htmlFor="notes" className="text-xs font-medium text-muted uppercase tracking-wide">
+          <label htmlFor="notes" className="text-xs font-medium text-subtle uppercase tracking-wide">
             Notes
           </label>
           <textarea
@@ -147,7 +147,7 @@ export default function Form({ applicationData, setIsOpen }: FormProps) {
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted transition hover:bg-surface hover:text-primary"
+            className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-subtle transition hover:bg-surface hover:text-primary"
           >
             Cancel
           </button>

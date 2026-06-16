@@ -25,7 +25,7 @@ const STATUS_STYLES: Record<string, string> = {
 
 export function StatusBadge({ status }: { status: JobStatus | string }) {
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[status] ?? "bg-surface text-muted"}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[status] ?? "bg-surface text-subtle"}`}>
       {status}
     </span>
   );

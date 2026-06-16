@@ -5,15 +5,65 @@ import Form from "@/components/Form";
 import { deleteApplication, findApplication } from "@/lib/actions";
 import { Edit2, Plus, Trash2, Briefcase } from "lucide-react";
 import { useEffect, useState } from "react";
+import Search from "./Search";
 
 export type ST = "Total" | "Applied" | "Interview" | "Offer" | "Rejected";
+
+export type VT = {
+  searchField: "company" | "position";
+  searchValue: string;
+  status: "total" | "applied" | "interview" | "offer" | "rejected";
+  sortBy: "newest" | "oldest" | "salaryAsc" | "salaryDesc";
+};
 
 export default function Applications({ allApplications }: { allApplications: AP[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [applicationData, setApplicationData] = useState<AP | null>(null);
   const [selected, setSelected] = useState<ST>("Total");
 
-  let applications = selected === "Total" ? allApplications : allApplications.filter((a) => a.status === selected);
+  const [variator, setVariator] = useState<VT>({
+    searchField: "company",
+    searchValue: "",
+    status: "total",
+    sortBy: "newest",
+  });
+
+  const setApplication = () => {
+    const { searchField, searchValue, status, sortBy } = variator;
+    let applications = allApplications.slice();
+
+    // Stage 1 - filter by search field/value
+    if (searchValue) {
+      const q = searchValue.toLowerCase();
+      applications = applications.filter((a) => String(a[searchField]).toLowerCase().includes(q));
+    }
+
+    // Stage 2 - filter by status (skip if "total")
+    if (status !== "total") {
+      const statusCapitalized = status.charAt(0).toUpperCase() + status.slice(1);
+      applications = applications.filter((a) => String(a.status) === statusCapitalized);
+    }
+
+    // Stage 3 - filter by sortBy (asc or desc or newest or oldest)
+    switch (sortBy) {
+      case "newest":
+        applications = applications.sort((a, b) => b.appliedAt.getTime() - a.appliedAt.getTime());
+        break;
+      case "oldest":
+        applications = applications.sort((a, b) => a.appliedAt.getTime() - b.appliedAt.getTime());
+        break;
+      case "salaryAsc":
+        applications = applications.sort((a, b) => Number(a.salary) - Number(b.salary));
+        break;
+      case "salaryDesc":
+        applications = applications.sort((a, b) => Number(b.salary) - Number(a.salary));
+        break;
+    }
+
+    return applications;
+  };
+
+  let applications = setApplication();
 
   const handleAdd = () => {
     setApplicationData(null);
@@ -44,7 +94,10 @@ export default function Applications({ allApplications }: { allApplications: AP[
         </div>
 
         {/* Stats */}
-        {allApplications.length > 0 && <StatsBar apps={allApplications} selected={selected} setSelected={setSelected} />}
+        {/* {allApplications.length > 0 && <StatsBar apps={allApplications} selected={selected} setSelected={setSelected} />} */}
+
+        {/* Search */}
+        <Search variator={variator} setVariator={setVariator} />
 
         {/* Table card */}
         <div className="rounded-xl border border-border bg-card overflow-hidden">
@@ -55,7 +108,7 @@ export default function Applications({ allApplications }: { allApplications: AP[
                 <Briefcase className="h-6 w-6 text-brand" />
               </div>
               <p className="text-sm font-medium text-primary">No applications yet</p>
-              <p className="text-xs text-muted">Click "Add Application" to start tracking roles.</p>
+              <p className="text-xs text-subtle">Click "Add Application" to start tracking roles.</p>
             </div>
           ) : (
             <table className="w-full text-sm">
@@ -73,28 +126,28 @@ export default function Applications({ allApplications }: { allApplications: AP[
                   <tr key={a.id} className="group transition-colors hover:bg-surface">
                     <td className="pl-5 pr-4 py-3.5 text-xs text-subtle tabular-nums w-8">{i + 1}</td>
                     <td className="px-4 py-3.5 font-medium text-primary whitespace-nowrap">{a.company}</td>
-                    <td className="px-4 py-3.5 text-muted whitespace-nowrap">{a.position}</td>
+                    <td className="px-4 py-3.5 text-subtle whitespace-nowrap">{a.position}</td>
                     <td className="px-4 py-3.5">
                       <StatusBadge status={a.status} />
                     </td>
-                    <td className="px-4 py-3.5 text-muted whitespace-nowrap text-xs">
+                    <td className="px-4 py-3.5 text-subtle whitespace-nowrap text-xs">
                       {a.appliedAt.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                     </td>
-                    <td className="px-4 py-3.5 text-muted whitespace-nowrap tabular-nums text-xs">₹&nbsp;{Number(a.salary).toLocaleString("en-IN")}</td>
-                    <td className="px-4 py-3.5 text-muted text-xs">{a.contact}</td>
-                    <td className="px-4 py-3.5 text-muted text-xs max-w-50 truncate">{a.notes}</td>
+                    <td className="px-4 py-3.5 text-subtle whitespace-nowrap tabular-nums text-xs">₹&nbsp;{Number(a.salary).toLocaleString("en-IN")}</td>
+                    <td className="px-4 py-3.5 text-subtle text-xs">{a.contact}</td>
+                    <td className="px-4 py-3.5 text-subtle text-xs max-w-50 truncate">{a.notes}</td>
                     <td className="pl-4 pr-5 py-3.5">
                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => handleEdit(a.id)}
-                          className="flex h-7 w-7 items-center justify-center rounded-md text-muted transition hover:bg-brand-light hover:text-brand"
+                          className="flex h-7 w-7 items-center justify-center rounded-md text-subtle transition hover:bg-brand-light hover:text-brand"
                           title="Edit"
                         >
                           <Edit2 className="h-3.5 w-3.5" />
                         </button>
                         <button
                           onClick={async () => deleteApplication(a.id)}
-                          className="flex h-7 w-7 items-center justify-center rounded-md text-muted transition hover:bg-red-50 hover:text-red-500"
+                          className="flex h-7 w-7 items-center justify-center rounded-md text-subtle transition hover:bg-red-50 hover:text-red-500"
                           title="Delete"
                         >
                           <Trash2 className="h-3.5 w-3.5" />

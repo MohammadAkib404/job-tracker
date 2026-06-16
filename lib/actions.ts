@@ -7,7 +7,14 @@ import { revalidatePath } from "next/cache";
 export async function createOrUpdateApplication(id: string | undefined, formData: FormData) {
   const company = formData.get("company") as string;
   const position = formData.get("position") as string;
-  const status = formData.get("status") as JobStatus;
+  const statusInput = (formData.get("status") as string | null)?.toLowerCase();
+  const statusMap = {
+    applied: JobStatus.Applied,
+    interview: JobStatus.Interview,
+    rejected: JobStatus.Rejected,
+    offer: JobStatus.Offer,
+  } as const;
+  const status = statusMap[statusInput as keyof typeof statusMap];
   const appliedAt = new Date(formData.get("appliedAt") as string);
   const salary = Number(formData.get("salary") as string);
   const contact = formData.get("contact") as string;
